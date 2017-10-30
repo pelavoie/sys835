@@ -1,10 +1,6 @@
-function [threshold, bin, point] = noisedetector(x, bin, point, threshold)
+function [threshold, bin, point] = noisedetector(energy, bin, point, threshold)
 	% noise detector
-	energy=0
-	% frame energy
-	for s = 1:length(x)
-		energy = energy + x(s)*x(s)
-	end
+	% frame's energy
 	% 4ms decay
 	for i=1:128
 		bin(i) = bin(i)*0.995
