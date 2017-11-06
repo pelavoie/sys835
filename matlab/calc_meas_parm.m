@@ -1,5 +1,5 @@
-function meas_parm = calc_meas_parm(Vn2, noise)
+function meas_parm = calc_meas_parm(energy, noise)
   % Calculate measurement parameter from noise and Signal value
-  % from equation no.3
-  meas_parm = (Vn2 - noise)/vn2;
+  % According to equation no.3
+  meas_parm = (energy - noise)/energy;
 endfunction
