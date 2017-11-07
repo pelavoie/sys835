@@ -1,18 +1,20 @@
-function [threshold, bin, point] = noisedetector(energy, bin, point, threshold)
+function threshold = noisedetector(energy)
+persistent threshold = 1024
+persistent bin = zeros(128,1)
+persistent point = zeros(128,1)
 	% noise detector
 	% frame's energy
 	% 4ms decay
-	for i=1:128
-		bin(i) = bin(i)*0.995
-	end
+	bin = bin*0.995
 	% update bin
-	i = energy/256
+	i = idivide(energy,256)
+	if (i>128)
+		i=128
+	end
 	bin(i) = bin(i) + 160
 	% form area histogram
 	for j=1:128
-		for i=1:j
-			point(j) = point(j) + bin(i)
-		end
+		point(j) = point(j) + sum(bin(1:j))
 	end
 	% noise absent?
 	if (point(10) >= point(128)/4)

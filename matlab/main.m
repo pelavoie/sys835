@@ -19,19 +19,20 @@ end
 % reshape signal data with a column for each 160 samples (20 ms)
 samples=reshape(x,160,[])
 % allocate output signal matrix
-nsamples =  length(samples(:,:)
+nsamples =  length(samples(:,:))
 output=zeros(160,nsamples)
 % for each segment of 20ms
 for s= 1:length(samples(:,:))
 	xs = samples(:,s)
-	energy = bitshift(sumsq(xs),-16)
-	[noisethreshold, ranges, cumulative] = noisedetector(energy, ranges, cumulative)
+	energy = bitshift(sumsq(xs),-15)
+	noisethreshold = noisedetector(energy)
+	isnoise = (energy<=noisethreshold)
 	% for each filter banks
 	for c=1:length(coeffs(:,:,:))
 		y = filter(b, a, xs)
 		energy = bitshift(sumsq(y),-16)
 		% if noise, smooth the energy over 1s (50 segments)
-		if (energy<=noisethreshold)
+		if (isnoise)
 			% TODO
 		end
 		% compute gain (TODO with suppression curve)

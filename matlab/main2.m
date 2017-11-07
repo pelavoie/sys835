@@ -25,7 +25,7 @@ end
 
 % Parameters
 alpha = 0.4;
-voice_threshold = 0.16;
+% voice_threshold = 0.16;
 eps = 10;
 frame_sec = 20e-3;
 samples_per_frame = frame_sec/(1/fs);
@@ -44,8 +44,10 @@ while((start_sample + samples_per_frame) <= length(data))
   frame_result = zeros(length(frame_data_20ms),1);
   
   %Noise Detector
-  frame_energy = sumsq(frame_data_20ms);
-  frame_is_noise = !detect_voice(frame_energy, voice_threshold);
+  frame_energy = bitshift(sumsq(frame_data_20ms*intmax('int16')),-16);
+  % frame_is_noise = !detect_voice(frame_energy, voice_threshold);
+  voice_threshold = noisedetector(frame_energy)
+  frame_is_noise = frame_energy<=voice_threshold
   
   
   
@@ -74,9 +76,9 @@ while((start_sample + samples_per_frame) <= length(data))
     ch_gain_smoothed = calc_smooth_gain(ch_gain, ch_gain_smooth_last(n));
     
     % Apply gain is Frame is noise
-    if frame_is_noise
+    %if frame_is_noise
       ch_data = ch_data * (ch_gain_smoothed);
-    endif
+    %endif
     
     % Recombine all Channel Data(180° outphased)
     if ((-1)^(n+1) > 0)
