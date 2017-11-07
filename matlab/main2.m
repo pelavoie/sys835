@@ -1,4 +1,5 @@
 % Main
+clear
 [data,fs]=audioread("car.wav");
 analysis_data(data,fs,false,'original.png');
 
@@ -6,11 +7,10 @@ analysis_data(data,fs,false,'original.png');
 % Based on McAulay and Malpass Speech Enhancement p.141
 %fc=[240 360 480 600 720 840 975 1125 1275 1425 1575 1750 1950 2150 2350 2600 2900 3200 3535];
 %bw=[120 120 120 120 120 120 150 150 150 150 150 200 200 200 300 300 300 300 370];
-%bw = bw*2
-% Custom shop
-fc=[120 240 360 480 600 720 840 960 1100 1250 1400 1550 1700 1900 2100 2300 2600 2900 3200 3500];
-bw=[120 120 120 120 120 120 120 150 150 150 150 150 200 200 200 300 300 300 300 350];
-bw = bw*2;
+
+% Bark Scale
+fc=[60 150 250 350 450 570 700 840 1000 1170 1370 1600 1850 2150 2500 2900 3400];
+bw=[80 100 100 100 110 120 140 150 160 190 210 240 280 320 380 450 550];
 
 nb_channels=length(fc);
 
@@ -25,8 +25,7 @@ end
 
 % Parameters
 alpha = 0.4;
-% voice_threshold = 0.16;
-eps = 10;
+eps = 5;
 frame_sec = 20e-3;
 samples_per_frame = frame_sec/(1/fs);
 
@@ -46,10 +45,8 @@ while((start_sample + samples_per_frame) <= length(data))
   %Noise Detector
   frame_energy = bitshift(sumsq(frame_data_20ms*intmax('int16')),-16);
   % frame_is_noise = !detect_voice(frame_energy, voice_threshold);
-  voice_threshold = noisedetector(frame_energy)
-  frame_is_noise = frame_energy<=voice_threshold
-  
-  
+  voice_threshold = noisedetector(frame_energy);
+  frame_is_noise = frame_energy<=voice_threshold;
   
   for n = 1:nb_channels
     % Separate signal into Channels (Channel Pre-filter)
@@ -75,13 +72,11 @@ while((start_sample + samples_per_frame) <= length(data))
     % Smooth Gain with previous
     ch_gain_smoothed = calc_smooth_gain(ch_gain, ch_gain_smooth_last(n));
     
-    % Apply gain is Frame is noise
-    %if frame_is_noise
-      ch_data = ch_data * (ch_gain_smoothed);
-    %endif
+    % Apply gain
+    ch_data = ch_data * (ch_gain_smoothed);
     
     % Recombine all Channel Data(180° outphased)
-    if ((-1)^(n+1) > 0)
+    if (mod(n,2))
       frame_result += ch_data;
     else 
       frame_result -= ch_data;

@@ -18,7 +18,7 @@ freq = (1:length(v_fft)) * (sampling_freq/N);
 amp = convert_to_db(abs(v_fft)/(0.5*N));
 plot(freq, amp);
 xlim([0 sampling_freq/2]);
-ylim([-90 max(amp)]);
+ylim([-120 max(amp)]);
 xlabel('Frequency(Hz)');
 ylabel('signal Amplitude (dB)');
 
