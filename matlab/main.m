@@ -29,6 +29,8 @@ for s= 1:length(samples(:,:))
 	isnoise = (energy<=noisethreshold)
 	% for each filter banks
 	for c=1:length(coeffs(:,:,:))
+		b = coeffs(1,:,c)
+		a = coeffs(2,:,c)
 		y = filter(b, a, xs)
 		energy = bitshift(sumsq(y),-16)
 		% if noise, smooth the energy over 1s (50 segments)
