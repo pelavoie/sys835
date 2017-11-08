@@ -8,4 +8,4 @@ function result = calc_I0(eps, gain_m)
   else
     result = Inf;
   end 
-endfunction
+end

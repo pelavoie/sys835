@@ -4,5 +4,5 @@ function voice_presence = detect_voice(frame_energy, voice_threshold)
     voice_presence = true;
   else
     voice_presence = false;
-  endif
-endfunction
+  end
+end

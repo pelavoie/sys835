@@ -1,6 +1,10 @@
-function v_suppression = analysis_data( v_data, sampling_freq, play=false, graph_name='')
+function analysis_data( v_data, sampling_freq, playing, graph_name)
 % Plot 2 graphs, time domain and frequecny domain
 % Play the waveforms
+
+if (isempty(playing))
+    playing = false;
+end
 
 subplot(2,1,1);
 time_s= (1:length(v_data))*(1/sampling_freq);
@@ -22,12 +26,12 @@ ylim([-120 max(amp)]);
 xlabel('Frequency(Hz)');
 ylabel('signal Amplitude (dB)');
 
-if (!strcmp(graph_name,''))
+if (strcmp(graph_name,'') == false)
   saveas (1, graph_name);
-endif
+end
 
-if (play)
+if (playing)
   sound(v_data,sampling_freq);
-endif
+end
 
-endfunction
+end

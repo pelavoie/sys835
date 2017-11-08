@@ -1,7 +1,19 @@
-function threshold = noisedetector(energy, graph=false)
-persistent threshold = 1024
-persistent bin = zeros(128,1)
-persistent point = zeros(128,1)
+function newthreshold = noisedetector(energy, graph)
+    persistent threshold;
+    if (isempty(threshold))
+        threshold = 1024;
+    end
+    persistent bin;
+    if (isempty(bin))
+        bin = zeros(128,1);
+    end
+    persistent point;
+    if (isempty(point))
+        point = zeros(128,1);
+    end
+    if (isempty(graph))
+        graph=false;
+    end
 	% noise detector
 	% frame's energy
 	% 4ms decay
@@ -36,8 +48,9 @@ persistent point = zeros(128,1)
 	end
 	threshold = candidate + decay * (threshold - candidate);
 	threshold = max([1024 threshold]);
+    newthreshold = threshold ;
 	if (graph)
 		figure(1); plot(bin);
 		figure(2); plot(point);
 	end
-endfunction
+end

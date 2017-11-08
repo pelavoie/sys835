@@ -7,7 +7,7 @@ function v_suppression = func_suppress_curve(eps, v_parm)
   v_suppression=[];
   for i = 1:length(v_parm)
     I0 = calc_I0(eps, v_parm(i));
-    if (I0 != Inf)
+    if (I0 ~= Inf)
       fact = 1/2*(1+sqrt(v_parm(i)));
       numer = exp((-1)*eps) * I0;
       denom = 1+exp((-1)*eps) * I0;
@@ -18,4 +18,4 @@ function v_suppression = func_suppress_curve(eps, v_parm)
      
     v_suppression = [v_suppression, suppress_gain_m];
   end
-endfunction
+end
