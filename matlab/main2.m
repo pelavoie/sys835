@@ -43,11 +43,11 @@ while((start_sample + samples_per_frame) <= length(data))
   frame_result = zeros(length(frame_data_20ms),1);
   
   %Noise Detector
-  frame_energy = bitshift(sumsq(frame_data_20ms*intmax('int16')),-16);
+  frame_energy = sumsq(frame_data_20ms*intmax('uint8'));
   % frame_is_noise = !detect_voice(frame_energy, voice_threshold);
   voice_threshold = noisedetector(frame_energy);
   frame_is_noise = frame_energy<=voice_threshold;
-  
+
   for n = 1:nb_channels
     % Separate signal into Channels (Channel Pre-filter)
     ch_data = filter(ch_parms_b(n,:), ch_parms_a(n,:), frame_data_20ms);
