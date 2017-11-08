@@ -65,17 +65,16 @@ while((start_sample + samples_per_frame) <= length(data))
       ch_noise = ch_noise_last(n) + alpha*(ch_energy - ch_noise_last(n));
     endif
             
-    % Calculate Gain
-    ch_meas_parms = calc_meas_parm(ch_energy,ch_noise);
+    % Détermination du gain 
+    ch_meas_parms = (ch_energy - ch_noise)/ch_energy;
     ch_gain = func_suppress_curve(eps, ch_meas_parms);
     
-    % Smooth Gain with previous
+    % Application du gain
     ch_gain_smoothed = calc_smooth_gain(ch_gain, ch_gain_smooth_last(n));
-    
-    % Apply gain
     ch_data = ch_data * (ch_gain_smoothed);
     
-    % Recombine all Channel Data(180° outphased)
+    % Recombinaison signaux des canaux 
+    % avec un déphasage de 180° entre eux.
     if (mod(n,2))
       frame_result += ch_data;
     else 
