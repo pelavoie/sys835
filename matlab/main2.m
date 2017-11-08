@@ -3,41 +3,34 @@ clear
 [data,fs]=audioread('car.wav');
 analysis_data(data,fs,false,'original.png');
 
-% filters bank 
-% Based on McAulay and Malpass Speech Enhancement p.141
-%fc=[240 360 480 600 720 840 975 1125 1275 1425 1575 1750 1950 2150 2350 2600 2900 3200 3535];
-%bw=[120 120 120 120 120 120 150 150 150 150 150 200 200 200 300 300 300 300 370];
-
+% filters bank
 % Bark Scale
 fc=[60 150 250 350 450 570 700 840 1000 1170 1370 1600 1850 2150 2500 2900 3400];
 bw=[80 100 100 100 110 120 140 150 160 190 210 240 280 320 380 450 550];
-
 nb_channels=length(fc);
+
+% Algorithm Parameters
+alpha = 0.1;
+eps = 15;
+
 % Pre-Allocate variables
-Result = zeros(length(data),1);
-
-% Pre-calculate prefilters parms.
-ch_parms_b= zeros(length(nb_channels),1);
-ch_parms_a= zeros(length(nb_channels),1);
-
-for n = 1:nb_channels
-  [b,a] = calc_channel_filter(fc(n),bw(n),fs);
-  ch_parms_b(n) =  b;
-  ch_parms_a(n) =  a;
-end
-
-% Parameters
-alpha = 0.4;
-eps = 5;
 frame_sec = 20e-3;
-samples_per_frame = frame_sec/(1/fs);
-
-
+start_sample = 1;
+Result = zeros(length(data),1);
+ch_parms_b= zeros(length(nb_channels),5);
+ch_parms_a= zeros(length(nb_channels),5);
 ch_noise_last = zeros(1,nb_channels);
 ch_gain_smooth_last= zeros(1,nb_channels);
 ch_noise_1s= zeros(nb_channels, 50);
 ch_avg_energy_1s = zeros(nb_channels, 1);
-start_sample = 1;
+samples_per_frame = frame_sec/(1/fs);
+
+% Pre-calculate prefilters parms.
+for n = 1:nb_channels
+  [b,a] = calc_channel_filter(fc(n),bw(n),fs);
+  ch_parms_b(n,:) =  b;
+  ch_parms_a(n,:) =  a;
+end
 
 while((start_sample + samples_per_frame) <= length(data))
   
