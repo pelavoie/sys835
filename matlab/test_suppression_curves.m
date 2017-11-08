@@ -8,8 +8,11 @@ hold on
 for eps=1:15
   plot(convert_to_db(gain_m_vect),convert_to_db( func_suppress_curve(eps,gain_m_vect) ));
 end
-xlim([-10 12])
-ylim([-25 0])
+xlim([-10 0])
+ylim([-30 0])
+title('Courbes de suppression du bruit pour différents epsilon')
+xlabel('Ratio g (dB)')
+ylabel("Gain du canal(dB)")
 hold off
 
 
