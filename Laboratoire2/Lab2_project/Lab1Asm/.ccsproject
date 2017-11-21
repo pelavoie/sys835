@@ -8,6 +8,7 @@
 <codegenToolVersion value="7.3.4"/>
 <isElfFormat value="false"/>
 <connection value=""/>
-<rts value="libc.a"/>
+<linkerCommandFile value="C6713.cmd"/>
+<rts value="rts6700.lib"/>
 <templateProperties value="id=com.ti.common.project.core.emptyProjectWithMainTemplate,"/>
 </projectOptions>

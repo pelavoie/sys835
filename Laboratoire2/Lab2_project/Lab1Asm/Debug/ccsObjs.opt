@@ -1,0 +1,1 @@
+"./main.obj" "./child.obj" "./Child2.obj" "./Child1.obj" -l"rts6700.lib" "../C6713.cmd" "../rts6700.lib" 
