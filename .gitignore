@@ -37,6 +37,7 @@
 *.hex
 
 # Debug files
+Debug/
 *.dSYM/
 *.su
 *.idb
@@ -53,3 +54,5 @@ dkms.conf
 
 # Graphs
 *.png
+.settings/
+
