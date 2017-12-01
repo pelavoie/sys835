@@ -2,16 +2,15 @@
  *
  * List of prototypes for used fonctions
  */
-
-
+#ifndef __UTILS_H__
+#define __UTILS_H__
 
 /************************************* Definitions **********************************************/
-// TODO: Tables of besssel Functions and epsilon
-
 
 /************************************* Prototypes ***********************************************/
 
-/* GetCalculatedSuppressionValue
+/*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/
+/*  function : GetCalculatedSuppressionValue
  *
  * 		arguments:
  * 			- ulEpsilon: Epsilon
@@ -21,10 +20,11 @@
  * 			and determine the value of Suppression with lMeasuredParms
  * 		returns:
  * 			- (float) Pre-calculated value of suppression Gain.
- */
+ *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/
 float GetCalculatedSuppressionValue(const unsigned int ulEpsilon, const float lMeasuredParms);
 
-/* GetSmoothedSuppressionValue
+/*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/
+/*  function : GetSmoothedSuppressionValue
  *
  * 		arguments:
  * 			- lCurrentGain: The current calculated Gain
@@ -33,10 +33,12 @@ float GetCalculatedSuppressionValue(const unsigned int ulEpsilon, const float lM
  * 			it "smooth" the current calculated gain to minimize brutal variations.
  * 		returns:
  * 			- (float) Smoothed value of suppression to apply.
- */
+ *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/
 float GetSmoothedSuppressionValue(const float lCurrentGain, const float lPreviousGain);
 
-/* GetSmoothedSuppressionValue
+/*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/
+/*
+ *  function : GetSmoothedSuppressionValue
  *
  * 		arguments:
  * 			- lResultData: Pointer of the Result Array of float data
@@ -48,5 +50,7 @@ float GetSmoothedSuppressionValue(const float lCurrentGain, const float lPreviou
  * 			the lResultData Arrays. The size of lResultData must be the same as lChannelData. *
  * 		returns:
  * 			- void, the lResultData arrays is "modified" to the new result.
- */
-void RecombineSignal(const float* lResultData, const float* lChannelData, const unsigned int ulNbData, const unsigned int ulChannelNumber);
+ *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/
+void CombineChannelsSignals(const float* lResultData, const float* lChannelData, const unsigned int ulNbData, const unsigned int ulChannelNumber);
+
+#endif /*__UTILS_H__*/
