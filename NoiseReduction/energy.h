@@ -8,7 +8,7 @@
 #ifndef ENERGY_H_
 #define ENERGY_H_
 
-unsigned sumsq(short* data, unsigned n);
+unsigned sumsq(float* data, unsigned n);
 
 
 #endif /* ENERGY_H_ */
