@@ -1,4 +1,4 @@
-/*	suppresion_curves.h
+/*	suppression_curves.h
  *
  * List of prototypes for used fonctions
  */
