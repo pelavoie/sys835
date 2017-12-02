@@ -24,7 +24,7 @@ function newthreshold = noisedetector(energy)
 	bin(i) = bin(i) + 160;
 	% form area histogram
 	for j=1:128
-		point(j) = point(j) + sum(bin(1:j));
+		point(j) = sum(bin(1:j));
 	end
 	% noise absent?
 	if (point(10) >= point(128)/4)

@@ -7,7 +7,8 @@ while (@fc > 0)
 {
 	$fc = shift @fc;
 	$bw = shift @bw;
-	print "mkfilter -Bu -Bp -o 2 -a " . ($fc-$bw/2)/8000 . " " . ($fc+$bw/2)/8000 . " -l\n";
+	$mkfilter = "x64/Release/mkfilter -Bu -Bp -o 2 -a " . ($fc-$bw/2)/8000 . " " . ($fc+$bw/2)/8000 . " -l";
+	print qx ($mkfilter); # . "\n";
 	# print qx("mkfilter -Bu -Bp -o 2 -a ");
 }
 # parse output of mkfilter
