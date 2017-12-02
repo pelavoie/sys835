@@ -6,10 +6,7 @@
 #include "include/utils.h"
 #include "include/suppression_curves.h"
 
-#define EPSILON 	INDEX_EPSILON_4
-
-extern const float 	BesselFiltersTables[NUMBER_OF_EPSILON][NUMBER_OF_SUPPRESSION_VALUES];
-const float* 		vlSuppresionGainTable = BesselFiltersTables[EPSILON];
+const double 	vlSuppresionTable[NUMBER_OF_SUPPRESSION_VALUES] = SUPPRESSION_FILTER_EPS_2;
 
 unsigned int	ulChannelId;
 float 			lChEnergy;
@@ -55,7 +52,7 @@ void main(void) {
 
 		// Determine the Gain from lookup table.
 		ulChSuppressionId = (unsigned int)((float)NUMBER_OF_SUPPRESSION_VALUES * lChParameter);
-		lChSuppressionGain = vlSuppresionGainTable[ulChSuppressionId];
+		lChSuppressionGain = vlSuppresionTable[ulChSuppressionId];
 
 		//Smooth the Gain
 		lChSuppressionGain = GetSmoothedSuppressionValue(lChSuppressionGain, lChPreviousSuppressionGain[ulChannelId]  );
@@ -73,6 +70,4 @@ void main(void) {
 
 	lChEnergy = 0.6f;
 	return;
-
-
 }
