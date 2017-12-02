@@ -48,6 +48,6 @@ void ApplyGainOnChFrame(const float lSuppressionGain, tFRAME* vlFrameSamples );
  * 		returns:
  * 			- void
  *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/
-void CombineChFrames(tCHANNELS_FRAMES* vChFrames, tFRAME* vOutputFrames);
+void CombineChFrame(tFRAME* vChFrame, tFRAME* vOutputFrame, const unsigned int ulChannelId);
 
 #endif /*__UTILS_H__*/

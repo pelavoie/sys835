@@ -1,5 +1,9 @@
 #include "../include/utils.h"
 
+/*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/
+/*  function : GetSmoothedSuppressionValue
+ *
+ *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/
 float GetSmoothedSuppressionValue(const float lCurrentGain, const float lPreviousGain)
 {
 	float lBeta;
@@ -13,35 +17,38 @@ float GetSmoothedSuppressionValue(const float lCurrentGain, const float lPreviou
 	}
 	return lPreviousGain + lBeta*(lCurrentGain - lPreviousGain);
 }
-
+/*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/
+/*  function : ApplyGainOnChFrame
+ *
+ *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/
 void ApplyGainOnChFrame(const float lSuppressionGain, tFRAME* vlFrameSamples )
 {
 	unsigned int ulSampleId;
 	for( ulSampleId = 0; ulSampleId < NUMBER_OF_SAMPLES_PER_FRAME; ulSampleId++ )
 	{
-		*vlFrameSamples[ulSampleId] = *vlFrameSamples[ulSampleId] * lSuppressionGain;
+		(*vlFrameSamples)[ulSampleId] = (*vlFrameSamples)[ulSampleId] * lSuppressionGain;
 	}
 }
-
-void CombineChFrames(tCHANNELS_FRAMES* vChFrames, tFRAME* vOutputFrames)
+/*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/
+/*  function : CombineChFrames
+ *
+ *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/
+void CombineChFrame(tFRAME* vChFrame, tFRAME* vOutputFrame, const unsigned int ulChannelId)
 {
-	unsigned int ulChannelId;
 	unsigned int ulDataId;
-	for( ulChannelId = 0; ulChannelId < NUMBER_OF_CHANNELS; ulChannelId++ )
+
+	if(ulChannelId % 2)
 	{
-		if(ulChannelId % 2)
+		for(ulDataId = 0; ulDataId < NUMBER_OF_SAMPLES_PER_FRAME; ulDataId ++)
 		{
-			for(ulDataId = 0; ulDataId < NUMBER_OF_SAMPLES_PER_FRAME; ulDataId ++)
-			{
-				*vOutputFrames[ulDataId] += *vChFrames[ulChannelId][ulDataId];
-			}
+			(*vOutputFrame)[ulDataId] += (*vChFrame)[ulDataId];
 		}
-		else
+	}
+	else
+	{
+		for(ulDataId = 0; ulDataId < NUMBER_OF_SAMPLES_PER_FRAME; ulDataId ++)
 		{
-			for(ulDataId = 0; ulDataId < NUMBER_OF_SAMPLES_PER_FRAME; ulDataId ++)
-			{
-				*vOutputFrames[ulDataId] -= *vChFrames[ulChannelId][ulDataId];
-			}
+			(*vOutputFrame)[ulDataId] -= (*vChFrame)[ulDataId];
 		}
 	}
 }
