@@ -7,7 +7,7 @@
 <deviceEndianness value="little"/>
 <codegenToolVersion value="7.3.4"/>
 <isElfFormat value="false"/>
-<connection value=""/>
+<connection value="common/targetdb/connections/tisim_connection.xml"/>
 <rts value="libc.a"/>
 <templateProperties value="id=com.ti.common.project.core.emptyProjectWithMainTemplate,"/>
 </projectOptions>

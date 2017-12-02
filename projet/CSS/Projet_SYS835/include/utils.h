@@ -6,22 +6,12 @@
 #define __UTILS_H__
 
 /************************************* Definitions **********************************************/
+#define NUMBER_OF_SAMPLES_PER_FRAME	160
+#define NUMBER_OF_CHANNELS			19
 
 /************************************* Prototypes ***********************************************/
-
-/*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/
-/*  function : GetCalculatedSuppressionValue
- *
- * 		arguments:
- * 			- ulEpsilon: Epsilon
- * 			- lMeasuredParms : Measured parameters.
- * 		Description:
- * 			it choose the proper Suppression table (according to ulEpsilon)
- * 			and determine the value of Suppression with lMeasuredParms
- * 		returns:
- * 			- (float) Pre-calculated value of suppression Gain.
- *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/
-float GetCalculatedSuppressionValue(const unsigned int ulEpsilon, const float lMeasuredParms);
+typedef float 	tFRAME[NUMBER_OF_SAMPLES_PER_FRAME];
+typedef tFRAME 	tCHANNELS_FRAMES[NUMBER_OF_CHANNELS];
 
 /*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/
 /*  function : GetSmoothedSuppressionValue
@@ -37,20 +27,27 @@ float GetCalculatedSuppressionValue(const unsigned int ulEpsilon, const float lM
 float GetSmoothedSuppressionValue(const float lCurrentGain, const float lPreviousGain);
 
 /*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/
-/*
- *  function : GetSmoothedSuppressionValue
+/*  function : ApplyGainOnChFrame
  *
  * 		arguments:
- * 			- lResultData: Pointer of the Result Array of float data
- * 			- lChannelData : Pointer of the Channel Array of float data
- * 			- ulNbData : Number of Data in the Arrays
- * 			- ulChannelNumber : the number of the channel
+ * 			- lSuppressionGain: The Gain to apply.
+ * 			- vlFrameSamples : Frame containing float data .
  * 		Description:
- * 			it add or substract (depending of the channel number) the lChannelData arrays to
- * 			the lResultData Arrays. The size of lResultData must be the same as lChannelData. *
+ * 			Apply gain to the frame data.
  * 		returns:
- * 			- void, the lResultData arrays is "modified" to the new result.
+ * 			- void
  *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/
-void CombineChannelsSignals(const float* lResultData, const float* lChannelData, const unsigned int ulNbData, const unsigned int ulChannelNumber);
+void ApplyGainOnChFrame(const float lSuppressionGain, tFRAME* vlFrameSamples );
+
+/*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/
+/*
+ *  function : CombineChFrames
+ *
+ * 		arguments:
+ * 		Description:
+ * 		returns:
+ * 			- void
+ *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/
+void CombineChFrames(tCHANNELS_FRAMES* vChFrames, tFRAME* vOutputFrames);
 
 #endif /*__UTILS_H__*/
