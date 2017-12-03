@@ -5,8 +5,7 @@
 
 int MainTest()
 {
-	tRAW_FRAME InputRawData;
-	tRAW_FRAME OutputData;
+
 	size_t n;
 
 	/* Open car.raw to produce Frames of data*/
@@ -17,6 +16,9 @@ int MainTest()
 
 	do
 	{
+		tRAW_FRAME InputRawData;
+		tRAW_FRAME OutputData;
+
 		// Read one frame
 		n = fread(InputRawData, sizeof(short), NUMBER_OF_SAMPLES_PER_FRAME, rid);
 		if (n !=NUMBER_OF_SAMPLES_PER_FRAME)

@@ -1,53 +1,25 @@
-/****************************************************************************/
-/*  C6713.cmd                                                               */
-/*  Copyright (c) 2010 Texas Instruments Incorporated                       */
-/*  Author: Rafael de Souza                                                 */
-/*                                                                          */
-/*    Description: This file is a sample linker command file that can be    */
-/*                 used for linking programs built with the C compiler and  */
-/*                 running the resulting .out file on an TMS320C6713        */
-/*                 device.  Use it as a guideline.  You will want to        */
-/*                 change the memory layout to match your specific C6xxx    */
-/*                 target system.  You may want to change the allocation    */
-/*                 scheme according to the size of your program.            */
-/*                                                                          */
-/****************************************************************************/
+/*C6713dsk.cmd  Linker command file*/
 
 MEMORY
 {
-    IRAM     o = 0x00000000  l = 0x00030000  /* 192kB - Internal RAM */
-    L2RAM    o = 0x00030000  l = 0x00010000  /* 64kB - Internal RAM/CACHE */
-    EMIFCE0  o = 0x80000000  l = 0x10000000  /* SDRAM in 6713 DSK */
-    EMIFCE1  o = 0x90000000  l = 0x10000000  /* Flash/CPLD in 6713 DSK */
-    EMIFCE2  o = 0xA0000000  l = 0x10000000  /* Daughterboard in 6713 DSK */
-    EMIFCE3  o = 0xB0000000  l = 0x10000000  /* Daughterboard in 6713 DSK */
+  IVECS:    	org=0h,  	len=0x220
+  IRAM:		org=0x00000220,	len=0x0002FDE0 /*internal memory*/
+  SDRAM:	org=0x80000000, len=0x01000000 /*external memory*/
+  FLASH:	org=0x90000000, len=0x00020000 /*flash memory*/
 }
 
 SECTIONS
 {
-    .text          >  EMIFCE1
-    .stack         >  IRAM
-    .bss           >  IRAM
-    .cio           >  EMIFCE0
-    .const         >  IRAM
-    .data          >  IRAM
-    .switch        >  IRAM
-    .sysmem        >  IRAM
-    .far           >  IRAM
-    .args          >  IRAM
-    .ppinfo        >  IRAM
-    .ppdata        >  IRAM
-  
-    /* COFF sections */
-    .pinit         >  EMIFCE1
-    .cinit         >  EMIFCE1
-  
-    /* EABI sections */
-    .binit         >  EMIFCE1
-    .init_array    >  EMIFCE1
-    .neardata      >  IRAM
-    .fardata       >  IRAM
-    .rodata        >  IRAM
-    .c6xabi.exidx  >  IRAM
-    .c6xabi.extab  >  IRAM
+  .EXT_RAM :> SDRAM
+  .vectors :> IVECS	/*in vector file*/
+  .text    :> IRAM	/*Created by C Compiler*/
+  .bss     :> IRAM
+  .cinit   :> IRAM
+  .stack   :> IRAM
+  .sysmem  :> IRAM
+  .const   :> IRAM
+  .switch  :> IRAM
+  .far     :> IRAM
+  .cio     :> IRAM
+  .csldata :> IRAM
 }

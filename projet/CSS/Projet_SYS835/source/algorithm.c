@@ -10,27 +10,26 @@
 
 void NoiseSuppressionAlgorithm(const tRAW_FRAME* p_vlInputRawFrameData, tRAW_FRAME* p_vlOutputFrameData)
 {
+	tFRAME			vlInputFrameData= {0.0};
+	tFRAME			vlChFrameSamples = {0.0};
+
 	unsigned int	ulFrameEnergy;
 	unsigned int	ulNoiseThreshold;
 	unsigned int	bFrameIsNoise;
 
-	const double 	vlSuppresionTable[NUMBER_OF_SUPPRESSION_VALUES] = SUPPRESSION_FILTER_EPS_2;
-
 	unsigned int	ulChannelId;
 	double 			lChEnergy;
+
 	float			lChNoise;
-	float			lChLastNoise[NUMBER_OF_CHANNELS] = {0.0};
-	float			lChLastNoise1Sec[NUMBER_OF_CHANNELS][NUMBER_FRAME_IN_1_SEC] = {0.0};
-	float			lChPreviousSuppressionGain[NUMBER_OF_CHANNELS]= {0.0};
 	float			lChNoiseAvg;
+	static float	lChLastNoise[NUMBER_OF_CHANNELS] = {0.0};
+	static float	lChLastNoise1Sec[NUMBER_OF_CHANNELS][NUMBER_FRAME_IN_1_SEC] = {0.0};
 
 	float 			lChParameter;
+	const double 	vlSuppresionTable[NUMBER_OF_SUPPRESSION_VALUES] = SUPPRESSION_FILTER_EPS_2;
 	unsigned int 	ulChSuppressionId;
 	float			lChSuppressionGain;
-
-
-	tFRAME			vlInputFrameData= {0.0};
-	tFRAME			vlChFrameSamples = {0.0};
+	static float	lChPreviousSuppressionGain[NUMBER_OF_CHANNELS]= {0.0};
 
 	// Calculate Frame Energy
 	ulFrameEnergy = CalculateRawFrameEnergy(p_vlInputRawFrameData);
@@ -39,7 +38,7 @@ void NoiseSuppressionAlgorithm(const tRAW_FRAME* p_vlInputRawFrameData, tRAW_FRA
 	ulNoiseThreshold = noisedetector(ulFrameEnergy);
 	bFrameIsNoise = ulFrameEnergy < ulNoiseThreshold;
 
-	// Convert Frame Data to Float
+	//Convert Frame Data to Float
 	ConvertRawFrameToFloatFrame(p_vlInputRawFrameData, &vlInputFrameData);
 
 	for( ulChannelId=0; ulChannelId < NUMBER_OF_CHANNELS; ulChannelId++ )
@@ -68,7 +67,7 @@ void NoiseSuppressionAlgorithm(const tRAW_FRAME* p_vlInputRawFrameData, tRAW_FRA
 		}
 
 		// Calculate Channel Gain Parameter
-		lChParameter = (lChEnergy - lChLastNoise[ulChannelId] )/lChEnergy;
+		lChParameter = (lChEnergy - lChNoise )/lChEnergy;
 
 		// Determine the Gain from lookup table.
 		//Overflow

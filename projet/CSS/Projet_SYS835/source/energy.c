@@ -42,3 +42,15 @@ double CalculateFrameEnergy(const tFRAME* p_vsFrameData)
 	return v2;
 }
 
+unsigned int CalculateFrameulEnergy(const tFRAME* p_vsFrameData)
+{
+	int i;
+	unsigned int v2=0;
+	for (i = 0; i<NUMBER_OF_SAMPLES_PER_FRAME; i++)
+	{
+		unsigned int scaled = (unsigned int)((*p_vsFrameData)[i]*UINT8_MAX);
+		v2+=(scaled*scaled);
+	}
+	return v2;
+}
+
