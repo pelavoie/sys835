@@ -31,17 +31,21 @@ int main(void) {
 	}
 	do
 	{
-		// frame energy
-		unsigned energy = sumsq(data, 160);
-		unsigned threshold = noisedetector(energy);
-		int frame_is_noise = energy < threshold;
-		if (frame_is_noise)
-		cnt++;
 		// convert input to float
 		for (i=0; i<160; i++)
 		{
 			input[i] = (float)(data[i]/32768.0);
 		}
+
+		// noise detector
+		unsigned energy = sumsq(input, 160);
+		unsigned threshold = noisedetector(energy);
+		int frame_is_noise = energy < threshold;
+		if (frame_is_noise)
+		cnt++;
+
+
+
 		// clear data
 		for (i=0; i<160; i++)
 		{
@@ -94,6 +98,6 @@ int main(void) {
 	int err = ferror(rid);
 	fclose(rid);
 	fclose(wid);
-//	printf("%d\n",cnt);
+	printf("%d\n",cnt);
 	return 0;
 }
