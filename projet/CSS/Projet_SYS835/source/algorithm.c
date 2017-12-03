@@ -62,6 +62,7 @@ void NoiseSuppressionAlgorithm(const tRAW_FRAME* p_vlInputRawFrameData, tRAW_FRA
 		lChParameter = (lChEnergy - lChLastNoise[ulChannelId] )/lChEnergy;
 
 		// Determine the Gain from lookup table.
+		//TODO: Rounding by typecast unsigned int... OK?
 		ulChSuppressionId = (unsigned int)((float)NUMBER_OF_SUPPRESSION_VALUES * lChParameter);
 		lChSuppressionGain = vlSuppresionTable[ulChSuppressionId];
 
