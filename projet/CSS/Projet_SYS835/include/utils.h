@@ -9,9 +9,11 @@
 #define NUMBER_OF_SAMPLES_PER_FRAME	160
 #define NUMBER_OF_CHANNELS			19
 
+#define CONV_FACTOR_FLOAT_TO_SHORT	(float)(1 << 15)
+
 /************************************* Prototypes ***********************************************/
-typedef float 	tFRAME[NUMBER_OF_SAMPLES_PER_FRAME];
-typedef tFRAME 	tCHANNELS_FRAMES[NUMBER_OF_CHANNELS];
+typedef float 		tFRAME[NUMBER_OF_SAMPLES_PER_FRAME];
+typedef short		tRAW_FRAME[NUMBER_OF_SAMPLES_PER_FRAME];
 
 /*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/
 /*  function : GetSmoothedSuppressionValue
@@ -48,6 +50,39 @@ void ApplyGainOnChFrame(const float lSuppressionGain, tFRAME* vlFrameSamples );
  * 		returns:
  * 			- void
  *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/
-void CombineChFrame(tFRAME* vChFrame, tFRAME* vOutputFrame, const unsigned int ulChannelId);
+void CombineChFrame(const tFRAME* vChFrame, const unsigned int ulChannelId, tRAW_FRAME* vOutputFrame);
+
+/*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/
+/*
+ *  function : ConvertRawFrameToFloatFrame
+ *
+ * 		arguments:
+ * 		Description:
+ * 		returns:
+ * 			- void
+ *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/
+void ConvertRawFrameToFloatFrame(const tRAW_FRAME* f_ptRawFrame, tFRAME* f_ptFrame);
+
+/*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/
+/*
+ *  function : ConvertFrameToRawFrame
+ *
+ * 		arguments:
+ * 		Description:
+ * 		returns:
+ * 			- void
+ *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/
+void ConvertFrameToRawFrame(const tFRAME* f_ptFrame, tRAW_FRAME* f_ptRawFrame);
+
+/*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/
+/*
+ *  function : GetFilteredChannelFrame
+ *
+ * 		arguments:
+ * 		Description:
+ * 		returns:
+ * 			- void
+ *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/
+void GetFilteredChannelFrame(tFRAME* f_ptInputFrame, tFRAME* f_ptChFrame, const unsigned int f_ulChannelId);
 
 #endif /*__UTILS_H__*/

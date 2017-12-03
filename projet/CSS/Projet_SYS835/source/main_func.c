@@ -5,32 +5,36 @@
 
 int MainTest()
 {
-	tFRAME InputData;
-	tFRAME OutputData;
+	tRAW_FRAME InputRawData;
+	tRAW_FRAME OutputData;
+	size_t n;
 
+	/* Open car.raw to produce Frames of data*/
 	FILE* rid = fopen("../data/car.raw","rb");
 	FILE* wid = fopen("../data/out.raw","wb");
 	if ((rid == NULL) || (wid == NULL))
-	{
 		return -1;
-	}
-	// read
-	size_t n = fread(InputData, sizeof(short), NUMBER_OF_SAMPLES_PER_FRAME, rid);
-	if (n !=NUMBER_OF_SAMPLES_PER_FRAME)
-	{
-		return -1;
-	}
 
 	do
 	{
-		NoiseSuppressionAlgorithm(&InputData, &OutputData);
+		// Read one frame
+		n = fread(InputRawData, sizeof(short), NUMBER_OF_SAMPLES_PER_FRAME, rid);
+		if (n !=NUMBER_OF_SAMPLES_PER_FRAME)
+		{
+			break;
+		}
 
-		// write
+		//TODO What types of data samples are (float or short) ?
+		// convert input to float ?
+
+		//Compute Frame
+		NoiseSuppressionAlgorithm(&InputRawData, &OutputData);
+
+		// Save Output
 		if (fwrite(OutputData, sizeof(short), NUMBER_OF_SAMPLES_PER_FRAME, wid) != NUMBER_OF_SAMPLES_PER_FRAME)
 		{
-			return -1;
+			break;
 		}
-		n = fread(InputData, sizeof(short), NUMBER_OF_SAMPLES_PER_FRAME, rid);
 	} while(n==NUMBER_OF_SAMPLES_PER_FRAME);
 
 	int eof = feof(rid);
@@ -40,3 +44,6 @@ int MainTest()
 //	printf("%d\n",cnt);
 	return 0;
 }
+
+
+

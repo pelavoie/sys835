@@ -2,9 +2,15 @@
 #include <math.h>
 #include "../include/algorithm.h"
 #include "../include/suppression_curves.h"
+#include "../include/energy.h"
+#include "../include/noisedetector.h"
 
-void NoiseSuppressionAlgorithm( tFRAME* p_vlInputFrameData, tFRAME* p_vlOutputFrameData)
+void NoiseSuppressionAlgorithm(tRAW_FRAME* p_vlInputRawFrameData, tRAW_FRAME* p_vlOutputFrameData)
 {
+	unsigned int	ulFrameEnergy;
+	unsigned int	ulNoiseThreshold;
+	unsigned int	bFrameIsNoise;
+
 	const double 	vlSuppresionTable[NUMBER_OF_SUPPRESSION_VALUES] = SUPPRESSION_FILTER_EPS_2;
 
 	unsigned int	ulChannelId;
@@ -17,16 +23,25 @@ void NoiseSuppressionAlgorithm( tFRAME* p_vlInputFrameData, tFRAME* p_vlOutputFr
 	float			lChSuppressionGain;
 	float			lChPreviousSuppressionGain[NUMBER_OF_CHANNELS];
 
+	tFRAME			vlInputFrameData;
 	tFRAME			vlChFrameSamples;
 
-	//TODO Noise Detector
+	// Calculate Frame Energy
+	ulFrameEnergy = CalculateFrameEnergy(p_vlInputRawFrameData);
 
-	//TODO Separate in Channel Frames
+	//Noise Detector
+	ulNoiseThreshold = noisedetector(ulFrameEnergy);
+	bFrameIsNoise = ulFrameEnergy < ulNoiseThreshold;
+
+	ConvertRawFrameToFloatFrame(p_vlInputRawFrameData, &vlInputFrameData);
 
 	for( ulChannelId=0; ulChannelId < NUMBER_OF_CHANNELS; ulChannelId++ )
 	{
+		//Separate in Channel Frames
+		GetFilteredChannelFrame(&vlInputFrameData, &vlChFrameSamples, ulChannelId);
+
 		//TODO Compute Channel Energy
-		lChEnergy = 0.6f;
+		lChEnergy = 0.2;
 
 		//TODO Compute Channel Noise Level
 		lChNoise = 0.5f;
@@ -48,7 +63,7 @@ void NoiseSuppressionAlgorithm( tFRAME* p_vlInputFrameData, tFRAME* p_vlOutputFr
 		ApplyGainOnChFrame(lChSuppressionGain, &vlChFrameSamples);
 
 		// Combine Channels Frames
-		CombineChFrame( &vlChFrameSamples, p_vlOutputFrameData, ulChannelId);
+		CombineChFrame( &vlChFrameSamples, ulChannelId, p_vlOutputFrameData);
 
 		// Save Previous Values
 		lChPreviousSuppressionGain[ulChannelId]  	= lChSuppressionGain;

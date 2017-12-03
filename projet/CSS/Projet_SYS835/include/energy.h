@@ -8,7 +8,9 @@
 #ifndef ENERGY_H_
 #define ENERGY_H_
 
-unsigned sumsq(short* data, unsigned n);
+#include "utils.h"
 
+unsigned sumsq(short* data, unsigned n);
+unsigned int CalculateFrameEnergy(tRAW_FRAME* p_vsFrameData);
 
 #endif /* ENERGY_H_ */

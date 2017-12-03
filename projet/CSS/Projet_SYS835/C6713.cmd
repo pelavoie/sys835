@@ -25,10 +25,10 @@ MEMORY
 
 SECTIONS
 {
-    .text          >  IRAM
+    .text          >  EMIFCE1
     .stack         >  IRAM
     .bss           >  IRAM
-    .cio           >  IRAM
+    .cio           >  EMIFCE0
     .const         >  IRAM
     .data          >  IRAM
     .switch        >  IRAM
@@ -39,12 +39,12 @@ SECTIONS
     .ppdata        >  IRAM
   
     /* COFF sections */
-    .pinit         >  IRAM
-    .cinit         >  IRAM
+    .pinit         >  EMIFCE1
+    .cinit         >  EMIFCE1
   
     /* EABI sections */
-    .binit         >  IRAM
-    .init_array    >  IRAM
+    .binit         >  EMIFCE1
+    .init_array    >  EMIFCE1
     .neardata      >  IRAM
     .fardata       >  IRAM
     .rodata        >  IRAM
