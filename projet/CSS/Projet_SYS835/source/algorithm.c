@@ -4,7 +4,6 @@
 #include "../include/suppression_gain.h"
 #include "../include/energy.h"
 #include "../include/noisedetector.h"
-#include <float.h>
 
 #define ALPHA	(float)0.4
 
@@ -45,17 +44,18 @@ void NoiseSuppressionAlgorithm(const tRAW_FRAME* p_vlInputRawFrameData, tRAW_FRA
 		GetFilteredChannelFrame((const tFRAME *)&vlInputFrameData, &vlChFrameSamples, ulChannelId);
 
 		//Calculate Channel Energy
+		//TODO : Overflow?
 		lChEnergy = CalculateFrameEnergy((const tFRAME *) &vlChFrameSamples);
 
-		//TODO Compute Channel Noise Level
-		lChNoise = 0.5f;
+		//Compute Channel Noise Level
 		if( bFrameIsNoise )
 		{
+			//TODO: 1 sec buffer smoothing to Compute Channel Noise Level
 
 		}
 		else
 		{
-
+			lChNoise = lChLastNoise[ulChannelId] + ALPHA*(lChEnergy - lChLastNoise[ulChannelId]);
 		}
 
 		// Calculate Channel Gain Parameter
