@@ -1,17 +1,18 @@
 
 #include <math.h>
+#include <stdint.h>
 #include "../include/algorithm.h"
 #include "../include/suppression_gain.h"
 #include "../include/energy.h"
 #include "../include/noisedetector.h"
 
-#define ALPHA					(float)0.4
+#define ALPHA					(float)0.1
 #define NUMBER_FRAME_IN_1_SEC	50
 
 void NoiseSuppressionAlgorithm(const tRAW_FRAME* p_vlInputRawFrameData, tRAW_FRAME* p_vlOutputFrameData)
 {
 	tFRAME			vlInputFrameData= {0.0};
-	tFRAME			vlChFrameSamples = {0.0};
+
 
 	unsigned int	ulFrameEnergy;
 	unsigned int	ulNoiseThreshold;
@@ -31,28 +32,26 @@ void NoiseSuppressionAlgorithm(const tRAW_FRAME* p_vlInputRawFrameData, tRAW_FRA
 	float			lChSuppressionGain;
 	static float	lChPreviousSuppressionGain[NUMBER_OF_CHANNELS]= {0.0};
 
-	// Calculate Frame Energy
-	ulFrameEnergy = CalculateRawFrameEnergy(p_vlInputRawFrameData);
-
-	//Noise Detector
-	ulNoiseThreshold = noisedetector(ulFrameEnergy);
-	bFrameIsNoise = ulFrameEnergy < ulNoiseThreshold;
 
 	//Convert Frame Data to Float
 	ConvertRawFrameToFloatFrame(p_vlInputRawFrameData, &vlInputFrameData);
 
+	// Calculate Frame Energy
+	ulFrameEnergy = CalculateFrameulEnergy((const tFRAME *)&vlInputFrameData);
+
+	//Noise Detector
+	ulNoiseThreshold = UINT16_MAX;//noisedetector(ulFrameEnergy);
+	bFrameIsNoise = ulFrameEnergy < ulNoiseThreshold;
+
 	for( ulChannelId=0; ulChannelId < NUMBER_OF_CHANNELS; ulChannelId++ )
 	{
+		tFRAME			vlChFrameSamples = {0.0};
+
 		//Separate in Channel Frames
 		GetFilteredChannelFrame((const tFRAME *)&vlInputFrameData, &vlChFrameSamples, ulChannelId);
 
 		//Calculate Channel Energy
 		lChEnergy = CalculateFrameEnergy((const tFRAME *) &vlChFrameSamples);
-		//TODO : Overflow?
-		/*if(lChEnergy >= FLT_MAX || lChParameter <= -FLT_MAX)
-		{
-			lChEnergy = 1.0;
-		}*/
 
 		//Compute Channel Noise Level
 		if( bFrameIsNoise )
@@ -71,9 +70,13 @@ void NoiseSuppressionAlgorithm(const tRAW_FRAME* p_vlInputRawFrameData, tRAW_FRA
 
 		// Determine the Gain from lookup table.
 		//Overflow
-		if(lChParameter >= FLT_MAX || lChParameter <= -FLT_MAX)
+		if( lChParameter >= 1.0)
 		{
 			lChParameter = 1.0;
+		}
+		if(lChParameter <= 0.0)
+		{
+			lChParameter = 0.0;
 		}
 		//TODO: Rounding by typecast unsigned int... OK?
 		ulChSuppressionId = (unsigned int)((float)NUMBER_OF_SUPPRESSION_VALUES * lChParameter - 1);

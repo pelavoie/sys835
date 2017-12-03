@@ -7,7 +7,7 @@
 
 /************************************* Definitions **********************************************/
 #define NUMBER_OF_SAMPLES_PER_FRAME	160
-#define NUMBER_OF_CHANNELS			19
+#define NUMBER_OF_CHANNELS			17
 
 #define CONV_FACTOR_FLOAT_TO_SHORT	(float)(1 << 15)
 
