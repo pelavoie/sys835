@@ -11,6 +11,6 @@
 #include "utils.h"
 
 unsigned sumsq(short* data, unsigned n);
-unsigned int CalculateFrameEnergy(tRAW_FRAME* p_vsFrameData);
+unsigned int CalculateFrameEnergy(const tRAW_FRAME* p_vsFrameData);
 
 #endif /* ENERGY_H_ */

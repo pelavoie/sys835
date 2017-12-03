@@ -1,11 +1,11 @@
 
 #include <math.h>
 #include "../include/algorithm.h"
-#include "../include/suppression_curves.h"
+#include "../include/suppression_gain.h"
 #include "../include/energy.h"
 #include "../include/noisedetector.h"
 
-void NoiseSuppressionAlgorithm(tRAW_FRAME* p_vlInputRawFrameData, tRAW_FRAME* p_vlOutputFrameData)
+void NoiseSuppressionAlgorithm(const tRAW_FRAME* p_vlInputRawFrameData, tRAW_FRAME* p_vlOutputFrameData)
 {
 	unsigned int	ulFrameEnergy;
 	unsigned int	ulNoiseThreshold;
@@ -16,12 +16,12 @@ void NoiseSuppressionAlgorithm(tRAW_FRAME* p_vlInputRawFrameData, tRAW_FRAME* p_
 	unsigned int	ulChannelId;
 	float 			lChEnergy;
 	float			lChNoise;
-	float			lChLastNoise[NUMBER_OF_CHANNELS];//TODO Initialze  Value
+	float			lChLastNoise[NUMBER_OF_CHANNELS] = {0};
 
 	float 			lChParameter;
 	unsigned int 	ulChSuppressionId;
 	float			lChSuppressionGain;
-	float			lChPreviousSuppressionGain[NUMBER_OF_CHANNELS];//TODO Initialze  Value
+	float			lChPreviousSuppressionGain[NUMBER_OF_CHANNELS]= {0};
 
 	tFRAME			vlInputFrameData;
 	tFRAME			vlChFrameSamples;
@@ -33,19 +33,27 @@ void NoiseSuppressionAlgorithm(tRAW_FRAME* p_vlInputRawFrameData, tRAW_FRAME* p_
 	ulNoiseThreshold = noisedetector(ulFrameEnergy);
 	bFrameIsNoise = ulFrameEnergy < ulNoiseThreshold;
 
+	//TODO : What type of Input Data (Float or Short)?
 	ConvertRawFrameToFloatFrame(p_vlInputRawFrameData, &vlInputFrameData);
 
 	for( ulChannelId=0; ulChannelId < NUMBER_OF_CHANNELS; ulChannelId++ )
 	{
 		//Separate in Channel Frames
-		GetFilteredChannelFrame(&vlInputFrameData, &vlChFrameSamples, ulChannelId);
+		GetFilteredChannelFrame((const tFRAME *)&vlInputFrameData, &vlChFrameSamples, ulChannelId);
 
 		//TODO Compute Channel Energy
 		lChEnergy = 0.2;
 
 		//TODO Compute Channel Noise Level
 		lChNoise = 0.5f;
+		if( bFrameIsNoise )
+		{
 
+		}
+		else
+		{
+
+		}
 
 		lChLastNoise[ulChannelId] = 0.2f;
 		lChPreviousSuppressionGain[ulChannelId] = 0;
@@ -64,7 +72,7 @@ void NoiseSuppressionAlgorithm(tRAW_FRAME* p_vlInputRawFrameData, tRAW_FRAME* p_
 		ApplyGainOnChFrame(lChSuppressionGain, &vlChFrameSamples);
 
 		// Combine Channels Frames
-		CombineChFrame( &vlChFrameSamples, ulChannelId, p_vlOutputFrameData);
+		CombineChFrame( (const tFRAME *)&vlChFrameSamples, ulChannelId, p_vlOutputFrameData);
 
 		// Save Previous Values
 		lChPreviousSuppressionGain[ulChannelId]  	= lChSuppressionGain;

@@ -2,35 +2,6 @@
 #include "../include/filter.h"
 
 /*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/
-/*  function : GetSmoothedSuppressionValue
- *
- *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/
-float GetSmoothedSuppressionValue(const float lCurrentGain, const float lPreviousGain)
-{
-	float lBeta;
-	if (lCurrentGain >= lPreviousGain)
-	{
-		lBeta = 1;
-	}
-	else
-	{
-		lBeta=0.5;
-	}
-	return lPreviousGain + lBeta*(lCurrentGain - lPreviousGain);
-}
-/*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/
-/*  function : ApplyGainOnChFrame
- *
- *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/
-void ApplyGainOnChFrame(const float lSuppressionGain, tFRAME* vlFrameSamples )
-{
-	unsigned int ulSampleId;
-	for( ulSampleId = 0; ulSampleId < NUMBER_OF_SAMPLES_PER_FRAME; ulSampleId++ )
-	{
-		(*vlFrameSamples)[ulSampleId] = (*vlFrameSamples)[ulSampleId] * lSuppressionGain;
-	}
-}
-/*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/
 /*  function : CombineChFrames
  *
  *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/
@@ -78,7 +49,7 @@ void ConvertFrameToRawFrame(const tFRAME* f_ptFrame ,tRAW_FRAME* f_ptRawFrame)
 /*  function : GetFilteredChannelFrame
  *
  *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/
-void GetFilteredChannelFrame(tFRAME* f_ptInputFrame, tFRAME* f_ptChFrame, const unsigned int f_ulChannelId)
+void GetFilteredChannelFrame(const tFRAME* f_ptInputFrame, tFRAME* f_ptChFrame, const unsigned int f_ulChannelId)
 {
 	filterN2((float*)f_ptChFrame, (float*)f_ptInputFrame, b[f_ulChannelId], gains[f_ulChannelId], NUMBER_OF_SAMPLES_PER_FRAME);
 }

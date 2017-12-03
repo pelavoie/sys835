@@ -25,7 +25,7 @@ int MainTest()
 		}
 
 		//Compute Frame
-		NoiseSuppressionAlgorithm(&InputRawData, &OutputData);
+		NoiseSuppressionAlgorithm((const tRAW_FRAME *)&InputRawData, &OutputData);
 
 		// Save Output
 		if (fwrite(OutputData, sizeof(short), NUMBER_OF_SAMPLES_PER_FRAME, wid) != NUMBER_OF_SAMPLES_PER_FRAME)

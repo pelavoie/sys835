@@ -22,5 +22,5 @@
  * 		returns:
  * 			- void
  *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/
-void NoiseSuppressionAlgorithm( tRAW_FRAME* p_vlInputFrameData, tRAW_FRAME* p_vlOutputFrameData);
+void NoiseSuppressionAlgorithm(const  tRAW_FRAME* p_vlInputFrameData, tRAW_FRAME* p_vlOutputFrameData);
 #endif /*__ALGORITHM_H__*/

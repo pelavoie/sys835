@@ -17,7 +17,7 @@ unsigned sumsq(short* data, unsigned n)
 	return v2;
 }
 
-unsigned int CalculateFrameEnergy(tRAW_FRAME* p_vsFrameData)
+unsigned int CalculateFrameEnergy(const tRAW_FRAME* p_vsFrameData)
 {
 	int i;
 	unsigned v2=0;
