@@ -1,0 +1,87 @@
+/*	utils.h
+ *
+ * List of prototypes for used fonctions
+ */
+#ifndef __UTILS_H__
+#define __UTILS_H__
+
+/************************************* Definitions **********************************************/
+#define NUMBER_OF_SAMPLES_PER_FRAME	160
+#define NUMBER_OF_CHANNELS			17
+
+#define CONV_FACTOR_FLOAT_TO_SHORT	32768.0
+//(float)(1 << 15)
+
+/************************************* Prototypes ***********************************************/
+typedef float 		tFRAME[NUMBER_OF_SAMPLES_PER_FRAME];
+typedef short		tRAW_FRAME[NUMBER_OF_SAMPLES_PER_FRAME];
+
+
+
+/*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/
+/*
+ *  function : CombineChFrames
+ *
+ * 		arguments:
+ * 		Description:
+ * 		returns:
+ * 			- void
+ *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/
+void CombineChFrame(const tFRAME* vChFrame, const unsigned int ulChannelId, tRAW_FRAME* vOutputFrame);
+
+/*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/
+/*
+ *  function : ConvertRawFrameToFloatFrame
+ *
+ * 		arguments:
+ * 		Description:
+ * 		returns:
+ * 			- void
+ *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/
+void ConvertRawFrameToFloatFrame(const tRAW_FRAME* f_ptRawFrame, tFRAME* f_ptFrame);
+
+/*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/
+/*
+ *  function : ConvertFrameToRawFrame
+ *
+ * 		arguments:
+ * 		Description:
+ * 		returns:
+ * 			- void
+ *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/
+void ConvertFrameToRawFrame(const tFRAME* f_ptFrame, tRAW_FRAME* f_ptRawFrame);
+
+/*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/
+/*
+ *  function : GetFilteredChannelFrame
+ *
+ * 		arguments:
+ * 		Description:
+ * 		returns:
+ * 			- void
+ *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/
+void GetFilteredChannelFrame(const tFRAME* f_ptInputFrame, tFRAME* f_ptChFrame, const unsigned int f_ulChannelId);
+
+/*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/
+/*
+ *  function : AppendValueToBuffer
+ *
+ * 		arguments:
+ * 		Description:
+ * 		returns:
+ * 			- void
+ *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/
+void AppendValueToBuffer( float* f_pCircularBuffer, const unsigned int f_ulBufferSize, const float f_lNewData);
+
+/*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/
+/*
+ *  function : CalculateAverage
+ *
+ * 		arguments:
+ * 		Description:
+ * 		returns:
+ * 			- void
+ *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/
+float CalculateAverage(const float * f_plData, const unsigned int f_ulNumberOfData );
+
+#endif /*__UTILS_H__*/
