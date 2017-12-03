@@ -53,3 +53,35 @@ void GetFilteredChannelFrame(const tFRAME* f_ptInputFrame, tFRAME* f_ptChFrame, 
 {
 	filterN2((float*)f_ptChFrame, (float*)f_ptInputFrame, b[f_ulChannelId], gains[f_ulChannelId], NUMBER_OF_SAMPLES_PER_FRAME);
 }
+/*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/
+/*  function : AppendValueToBuffer
+ *
+ *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/
+void AppendValueToBuffer( float* f_pCircularBuffer, const unsigned int f_ulBufferSize, const float f_lNewData)
+{
+	static unsigned int ulId = 0;
+	f_pCircularBuffer[ulId] = f_lNewData;
+	ulId++;
+
+	if (ulId > f_ulBufferSize)
+	{
+		ulId = 0;
+	}
+}
+/*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/
+/*  function : CalculateAverage
+ *
+ *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/
+float CalculateAverage(const float * f_plData, const unsigned int f_ulNumberOfData )
+{
+	unsigned int ulId = 0;
+	float		lsum=0;
+
+	for(ulId = 0; ulId < f_ulNumberOfData; ulId++ )
+	{
+		lsum += f_plData[ulId];
+	}
+
+	return lsum/(float)f_ulNumberOfData;
+}
+
