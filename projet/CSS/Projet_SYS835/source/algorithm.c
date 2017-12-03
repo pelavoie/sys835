@@ -16,12 +16,12 @@ void NoiseSuppressionAlgorithm(tRAW_FRAME* p_vlInputRawFrameData, tRAW_FRAME* p_
 	unsigned int	ulChannelId;
 	float 			lChEnergy;
 	float			lChNoise;
-	float			lChLastNoise[NUMBER_OF_CHANNELS];
+	float			lChLastNoise[NUMBER_OF_CHANNELS];//TODO Initialze  Value
 
 	float 			lChParameter;
 	unsigned int 	ulChSuppressionId;
 	float			lChSuppressionGain;
-	float			lChPreviousSuppressionGain[NUMBER_OF_CHANNELS];
+	float			lChPreviousSuppressionGain[NUMBER_OF_CHANNELS];//TODO Initialze  Value
 
 	tFRAME			vlInputFrameData;
 	tFRAME			vlChFrameSamples;
@@ -45,6 +45,7 @@ void NoiseSuppressionAlgorithm(tRAW_FRAME* p_vlInputRawFrameData, tRAW_FRAME* p_
 
 		//TODO Compute Channel Noise Level
 		lChNoise = 0.5f;
+
 
 		lChLastNoise[ulChannelId] = 0.2f;
 		lChPreviousSuppressionGain[ulChannelId] = 0;

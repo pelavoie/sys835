@@ -24,9 +24,6 @@ int MainTest()
 			break;
 		}
 
-		//TODO What types of data samples are (float or short) ?
-		// convert input to float ?
-
 		//Compute Frame
 		NoiseSuppressionAlgorithm(&InputRawData, &OutputData);
 
