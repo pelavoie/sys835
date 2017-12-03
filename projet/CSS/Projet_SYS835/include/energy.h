@@ -9,8 +9,7 @@
 #define ENERGY_H_
 
 #include "utils.h"
-
-unsigned sumsq(short* data, unsigned n);
 unsigned int CalculateFrameEnergy(tRAW_FRAME* p_vsFrameData);
+unsigned sumsq(float* data, unsigned n);
 
 #endif /* ENERGY_H_ */
