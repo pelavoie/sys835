@@ -10,7 +10,9 @@
 
 #include "utils.h"
 
-unsigned int CalculateFrameEnergy(const tRAW_FRAME* p_vsFrameData);
+unsigned int CalculateRawFrameEnergy(const tRAW_FRAME* p_vsFrameData);
+double CalculateFrameEnergy(const tFRAME* p_vsFrameData);
+
 unsigned sumsq(float* data, unsigned n);
 
 

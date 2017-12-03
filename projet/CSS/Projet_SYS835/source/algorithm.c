@@ -4,6 +4,9 @@
 #include "../include/suppression_gain.h"
 #include "../include/energy.h"
 #include "../include/noisedetector.h"
+#include <float.h>
+
+#define ALPHA	(float)0.4
 
 void NoiseSuppressionAlgorithm(const tRAW_FRAME* p_vlInputRawFrameData, tRAW_FRAME* p_vlOutputFrameData)
 {
@@ -14,20 +17,20 @@ void NoiseSuppressionAlgorithm(const tRAW_FRAME* p_vlInputRawFrameData, tRAW_FRA
 	const double 	vlSuppresionTable[NUMBER_OF_SUPPRESSION_VALUES] = SUPPRESSION_FILTER_EPS_2;
 
 	unsigned int	ulChannelId;
-	float 			lChEnergy;
+	double 			lChEnergy;
 	float			lChNoise;
 	float			lChLastNoise[NUMBER_OF_CHANNELS] = {0};
 
 	float 			lChParameter;
 	unsigned int 	ulChSuppressionId;
 	float			lChSuppressionGain;
-	float			lChPreviousSuppressionGain[NUMBER_OF_CHANNELS]= {0};
+	float			lChPreviousSuppressionGain[NUMBER_OF_CHANNELS]= {1.0};
 
 	tFRAME			vlInputFrameData;
 	tFRAME			vlChFrameSamples;
 
 	// Calculate Frame Energy
-	ulFrameEnergy = CalculateFrameEnergy(p_vlInputRawFrameData);
+	ulFrameEnergy = CalculateRawFrameEnergy(p_vlInputRawFrameData);
 
 	//Noise Detector
 	ulNoiseThreshold = noisedetector(ulFrameEnergy);
@@ -41,8 +44,8 @@ void NoiseSuppressionAlgorithm(const tRAW_FRAME* p_vlInputRawFrameData, tRAW_FRA
 		//Separate in Channel Frames
 		GetFilteredChannelFrame((const tFRAME *)&vlInputFrameData, &vlChFrameSamples, ulChannelId);
 
-		//TODO Compute Channel Energy
-		lChEnergy = 0.2;
+		//Calculate Channel Energy
+		lChEnergy = CalculateFrameEnergy((const tFRAME *) &vlChFrameSamples);
 
 		//TODO Compute Channel Noise Level
 		lChNoise = 0.5f;
@@ -55,15 +58,17 @@ void NoiseSuppressionAlgorithm(const tRAW_FRAME* p_vlInputRawFrameData, tRAW_FRA
 
 		}
 
-		lChLastNoise[ulChannelId] = 0.2f;
-		lChPreviousSuppressionGain[ulChannelId] = 0;
-
 		// Calculate Channel Gain Parameter
 		lChParameter = (lChEnergy - lChLastNoise[ulChannelId] )/lChEnergy;
 
 		// Determine the Gain from lookup table.
+		//Overflow
+		if(lChParameter >= FLT_MAX || lChParameter <= -FLT_MAX)
+		{
+			lChParameter = 1.0;
+		}
 		//TODO: Rounding by typecast unsigned int... OK?
-		ulChSuppressionId = (unsigned int)((float)NUMBER_OF_SUPPRESSION_VALUES * lChParameter);
+		ulChSuppressionId = (unsigned int)((float)NUMBER_OF_SUPPRESSION_VALUES * lChParameter - 1);
 		lChSuppressionGain = vlSuppresionTable[ulChSuppressionId];
 
 		//Smooth the Gain
