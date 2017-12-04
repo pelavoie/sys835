@@ -9,7 +9,7 @@
 #define ALPHA					(float)0.1
 #define NUMBER_FRAME_IN_1_SEC	50
 
-void NoiseSuppressionAlgorithm(const tRAW_FRAME* p_vlInputRawFrameData, tRAW_FRAME* p_vlOutputFrameData)
+void NoiseSuppressionAlgorithm(const tRAW_FRAME* f_ptRawInputFrame, tRAW_FRAME* f_ptRawOutputFrame)
 {
 	tFRAME			vlInputFrameData= {0.0};
 
@@ -34,10 +34,10 @@ void NoiseSuppressionAlgorithm(const tRAW_FRAME* p_vlInputRawFrameData, tRAW_FRA
 
 
 	//Convert Frame Data to Float
-	ConvertRawFrameToFloatFrame(p_vlInputRawFrameData, &vlInputFrameData);
+	ConvertRawFrameToFloatFrame(f_ptRawInputFrame, &vlInputFrameData);
 
 	// Calculate Frame Energy
-	ulFrameEnergy = CalculateFrameulEnergy((const tFRAME *)&vlInputFrameData);
+	ulFrameEnergy = CalculateFrameEnergyScaled((const tFRAME *)&vlInputFrameData);
 
 	//Noise Detector
 	ulNoiseThreshold = UINT16_MAX;//noisedetector(ulFrameEnergy);
@@ -89,7 +89,7 @@ void NoiseSuppressionAlgorithm(const tRAW_FRAME* p_vlInputRawFrameData, tRAW_FRA
 		ApplyGainOnChFrame(lChSuppressionGain, &vlChFrameSamples);
 
 		// Combine Channels Frames
-		CombineChFrame( (const tFRAME *)&vlChFrameSamples, ulChannelId, p_vlOutputFrameData);
+		CombineChFrame( (const tFRAME *)&vlChFrameSamples, ulChannelId, f_ptRawOutputFrame);
 
 		// Save Previous Values
 		lChPreviousSuppressionGain[ulChannelId]  	= lChSuppressionGain;

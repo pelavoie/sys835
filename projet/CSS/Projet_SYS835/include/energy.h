@@ -1,8 +1,11 @@
 /*
- * energy.h
+ * 	main_func.h
  *
  *  Created on: Dec 2, 2017
- *      Author: phlav
+ *      Author: Eric Lacerte and Philippe Lavoie
+ *
+ *  File containing all energy calculations
+ *
  */
 
 #ifndef ENERGY_H_
@@ -10,11 +13,32 @@
 
 #include "utils.h"
 
-unsigned int 	CalculateRawFrameEnergy(const tRAW_FRAME* p_vsFrameData);
-double 			CalculateFrameEnergy(const tFRAME* p_vsFrameData);
-unsigned int 	CalculateFrameulEnergy(const tFRAME* p_vsFrameData);
+/*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/
+/*  function : CalculateFrameEnergy
+ *
+ * 		arguments:
+ * 			- f_ptFrame: 		A pointer to a Frame of data as float.
+ *
+ * 		Description:
+ * 			Calculate the Frame Energy using (Eq.1)
+ *
+ * 		returns:
+ * 			- double, the Frame Energy.
+ *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/
+double 	CalculateFrameEnergy(const tFRAME* f_ptFrame);
 
-unsigned sumsq(float* data, unsigned n);
-
+/*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/
+/*  function : CalculateFrameEnergyScaled
+ *
+ * 		arguments:
+ * 			- f_ptFrame: 		A pointer to a Frame of data as float.
+ *
+ * 		Description:
+ * 			Calculate the Frame Energy using (Eq.1) and scaling for each samples (UINT8_MAX)
+ *
+ * 		returns:
+ * 			- Unsigned int, the scaled Frame Energy.
+ *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/
+unsigned int CalculateFrameEnergyScaled(const tFRAME* f_ptFrame);
 
 #endif /* ENERGY_H_ */
