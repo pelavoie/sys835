@@ -57,10 +57,10 @@ void GetFilteredChannelFrame(const tFRAME* f_ptInputFrame, tFRAME* f_ptChFrame, 
 /*  function : AppendValueToBuffer
  *
  *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/
-void AppendValueToBuffer( float* f_pCircularBuffer, const unsigned int f_ulBufferSize, const float f_lNewData,const unsigned int f_ulChannelId)
+void AppendChNoiseToBuffer( tBUFFER_1S_NOISE* f_pCircularBuffer, const unsigned int f_ulBufferSize, const float f_lNewData,const unsigned int f_ulChannelId)
 {
 	static unsigned int ulId[NUMBER_OF_CHANNELS] = {0};
-	f_pCircularBuffer[ulId[f_ulChannelId]] = f_lNewData;
+	(*f_pCircularBuffer)[ulId[f_ulChannelId]] = f_lNewData;
 	ulId[f_ulChannelId]++;
 
 	if (ulId[f_ulChannelId] > f_ulBufferSize)
@@ -72,14 +72,14 @@ void AppendValueToBuffer( float* f_pCircularBuffer, const unsigned int f_ulBuffe
 /*  function : CalculateAverage
  *
  *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/
-float CalculateAverage(const float * f_plData, const unsigned int f_ulNumberOfData )
+float CalculateAverage(const tBUFFER_1S_NOISE* f_plData, const unsigned int f_ulNumberOfData )
 {
 	unsigned int ulId = 0;
 	float		lsum=0;
 
 	for(ulId = 0; ulId < f_ulNumberOfData; ulId++ )
 	{
-		lsum += f_plData[ulId];
+		lsum += (*f_plData)[ulId];
 	}
 
 	return lsum/(float)f_ulNumberOfData;

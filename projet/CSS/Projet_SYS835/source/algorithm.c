@@ -9,6 +9,7 @@
 #define ALPHA					(float)0.1
 #define NUMBER_FRAME_IN_1_SEC	50
 
+
 void NoiseSuppressionAlgorithm(const tRAW_FRAME* f_ptRawInputFrame, tRAW_FRAME* f_ptRawOutputFrame)
 {
 	tFRAME			vlInputFrameData= {0.0};
@@ -21,10 +22,10 @@ void NoiseSuppressionAlgorithm(const tRAW_FRAME* f_ptRawInputFrame, tRAW_FRAME* 
 	unsigned int	ulChannelId;
 	double 			lChEnergy;
 
-	float			lChNoise;
-	float			lChNoiseAvg;
-	static float	lChLastNoise[NUMBER_OF_CHANNELS] = {0.0};
-	static float	lChLastNoise1Sec[NUMBER_OF_CHANNELS][NUMBER_FRAME_IN_1_SEC] = {0.0};
+	float					lChNoise;
+	float					lChNoiseAvg;
+	static float			lChLastNoise[NUMBER_OF_CHANNELS] = {0.0};
+	static tBUFFER_1S_NOISE	lChLastNoise1Sec[NUMBER_OF_CHANNELS];
 
 	float 			lChParameter;
 	const double 	vlSuppresionTable[NUMBER_OF_SUPPRESSION_VALUES] = SUPPRESSION_FILTER_EPS_2;
@@ -56,8 +57,8 @@ void NoiseSuppressionAlgorithm(const tRAW_FRAME* f_ptRawInputFrame, tRAW_FRAME* 
 		//Compute Channel Noise Level
 		if( bFrameIsNoise )
 		{
-			AppendValueToBuffer( lChLastNoise1Sec[ulChannelId], NUMBER_FRAME_IN_1_SEC, lChEnergy, ulChannelId);
-			lChNoiseAvg = CalculateAverage( lChLastNoise1Sec[ulChannelId], NUMBER_FRAME_IN_1_SEC);
+			AppendChNoiseToBuffer( &lChLastNoise1Sec[ulChannelId], NUMBER_FRAME_IN_1_SEC, lChEnergy, ulChannelId);
+			lChNoiseAvg = CalculateAverage( (const tBUFFER_1S_NOISE *)&lChLastNoise1Sec[ulChannelId], NUMBER_FRAME_IN_1_SEC);
 			lChNoise = lChLastNoise[ulChannelId] + ALPHA*(lChNoiseAvg - lChLastNoise[ulChannelId]);
 		}
 		else

@@ -12,6 +12,7 @@
 
 typedef float 		tFRAME[NUMBER_OF_SAMPLES_PER_FRAME];
 typedef short		tRAW_FRAME[NUMBER_OF_SAMPLES_PER_FRAME];
+typedef float		tBUFFER_1S_NOISE[50];
 
 /************************************* Prototypes ***********************************************/
 /*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
@@ -59,7 +60,7 @@ void GetFilteredChannelFrame(const tFRAME* f_ptInputFrame, tFRAME* f_ptChFrame, 
 
 /*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/
 /*
- *  function : AppendValueToBuffer
+ *  function : AppendChNoiseToBuffer
  *
  * 		arguments:
  * 			f_ptChNoiseBuffer : A pointer to the Channel Noise 1 second Buffer.
@@ -73,7 +74,7 @@ void GetFilteredChannelFrame(const tFRAME* f_ptInputFrame, tFRAME* f_ptChFrame, 
  * 		returns:
  * 			- void
  *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/
-void AppendValueToBuffer( float* f_ptChNoiseBuffer, const unsigned int f_ulBufferSize, const float f_lNewData,const unsigned int f_ulChannelId);
+void AppendChNoiseToBuffer( tBUFFER_1S_NOISE* f_ptChNoiseBuffer, const unsigned int f_ulBufferSize, const float f_lNewData,const unsigned int f_ulChannelId);
 
 /*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/
 /*
@@ -88,6 +89,6 @@ void AppendValueToBuffer( float* f_ptChNoiseBuffer, const unsigned int f_ulBuffe
  * 		returns:
  * 			- float, the average noise value of the Channel Noise buffer of 1 seconds.
  *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/
-float CalculateAverage(const float * f_ptChNoiseBuffer, const unsigned int f_ulBufferSize );
+float CalculateAverage(const tBUFFER_1S_NOISE* f_ptChNoiseBuffer, const unsigned int f_ulBufferSize );
 
 #endif /*__UTILS_H__*/
