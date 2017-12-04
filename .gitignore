@@ -53,6 +53,6 @@ Mkfile.old
 dkms.conf
 
 # Graphs
-*.png
+#*.png
 .settings/
 
