@@ -3,7 +3,7 @@
 #include "../include/main_func.h"
 #include "../include/algorithm.h"
 
-int MainTest()
+void MainTest()
 {
 
 	size_t n;
@@ -12,7 +12,7 @@ int MainTest()
 	FILE* rid = fopen("../data/car.raw","rb");
 	FILE* wid = fopen("../data/out.raw","wb");
 	if ((rid == NULL) || (wid == NULL))
-		return -1;
+		return;
 
 	do
 	{
@@ -40,8 +40,7 @@ int MainTest()
 	int err = ferror(rid);
 	fclose(rid);
 	fclose(wid);
-//	printf("%d\n",cnt);
-	return 0;
+	return;
 }
 
 
