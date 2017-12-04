@@ -56,7 +56,7 @@ void NoiseSuppressionAlgorithm(const tRAW_FRAME* p_vlInputRawFrameData, tRAW_FRA
 		//Compute Channel Noise Level
 		if( bFrameIsNoise )
 		{
-			AppendValueToBuffer( lChLastNoise1Sec[ulChannelId], NUMBER_FRAME_IN_1_SEC, lChEnergy);
+			AppendValueToBuffer( lChLastNoise1Sec[ulChannelId], NUMBER_FRAME_IN_1_SEC, lChEnergy, ulChannelId);
 			lChNoiseAvg = CalculateAverage( lChLastNoise1Sec[ulChannelId], NUMBER_FRAME_IN_1_SEC);
 			lChNoise = lChLastNoise[ulChannelId] + ALPHA*(lChNoiseAvg - lChLastNoise[ulChannelId]);
 		}

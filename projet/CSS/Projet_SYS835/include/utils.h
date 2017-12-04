@@ -70,7 +70,7 @@ void GetFilteredChannelFrame(const tFRAME* f_ptInputFrame, tFRAME* f_ptChFrame, 
  * 		returns:
  * 			- void
  *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/
-void AppendValueToBuffer( float* f_pCircularBuffer, const unsigned int f_ulBufferSize, const float f_lNewData);
+void AppendValueToBuffer( float* f_pCircularBuffer, const unsigned int f_ulBufferSize, const float f_lNewData,const unsigned int f_ulChannelId);
 
 /*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/
 /*

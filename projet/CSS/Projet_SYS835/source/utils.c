@@ -57,15 +57,15 @@ void GetFilteredChannelFrame(const tFRAME* f_ptInputFrame, tFRAME* f_ptChFrame, 
 /*  function : AppendValueToBuffer
  *
  *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/
-void AppendValueToBuffer( float* f_pCircularBuffer, const unsigned int f_ulBufferSize, const float f_lNewData)
+void AppendValueToBuffer( float* f_pCircularBuffer, const unsigned int f_ulBufferSize, const float f_lNewData,const unsigned int f_ulChannelId)
 {
-	static unsigned int ulId = 0;
-	f_pCircularBuffer[ulId] = f_lNewData;
-	ulId++;
+	static unsigned int ulId[NUMBER_OF_CHANNELS] = {0};
+	f_pCircularBuffer[ulId[f_ulChannelId]] = f_lNewData;
+	ulId[f_ulChannelId]++;
 
-	if (ulId > f_ulBufferSize)
+	if (ulId[f_ulChannelId] > f_ulBufferSize)
 	{
-		ulId = 0;
+		ulId[f_ulChannelId] = 0;
 	}
 }
 /*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/
