@@ -9,6 +9,7 @@
 #define FILTER_H_
 
 void filterN2(float* out, float* in, float* coeffs, float gain, unsigned nb);
+void FilterASM(float* out, float* in, float* coeffs, float gain, unsigned nb);
 
 float b[17][4] = {
 	{ -0.914976, 3.738840, -5.732650, 3.908784},
