@@ -1,6 +1,11 @@
-/*	suppression_curves.h
+/*
+ * suppression_curves.h
  *
- * List of prototypes for used functions
+ *  Created on: Dec 2, 2017
+ *      Author: Eric Lacerte and Philippe Lavoie
+ *
+ *  File containing all related to the Bessel Suppression Gain.
+ *
  */
 
 #ifndef __SUPPRESSION_CURVES_H__
@@ -8,6 +13,7 @@
 
 #include "../include/utils.h"
 
+/*************************************** Definitions *********************************************/
 #define NUMBER_OF_SUPPRESSION_VALUES	50
 
 /*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -36,26 +42,26 @@
 /*  function : GetSmoothedSuppressionValue
  *
  * 		arguments:
- * 			- lCurrentGain: The current calculated Gain
- * 			- lPreviousGain : The last applied Gain.
+ * 			- f_lCurrentGain: The current calculated Gain
+ * 			- f_lPreviousGain : The last applied Gain.
  * 		Description:
- * 			it "smooth" the current calculated gain to minimize brutal variations.
+ * 			it "smooth" the current calculated gain to minimize brutal variations. (Éq. 6 et 7)
  * 		returns:
  * 			- (float) Smoothed value of suppression to apply.
  *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/
-float GetSmoothedSuppressionValue(const float lCurrentGain, const float lPreviousGain);
+float GetSmoothedSuppressionValue(const float f_lCurrentGain, const float f_lPreviousGain);
 
 /*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/
 /*  function : ApplyGainOnChFrame
  *
  * 		arguments:
- * 			- lSuppressionGain: The Gain to apply.
- * 			- vlFrameSamples : Frame containing float data .
+ * 			- f_ptFrame :  	A pointer to a Frame of data as float.
+ * 			- f_lGain: 		The Gain to be apply.
  * 		Description:
  * 			Apply gain to the frame data.
  * 		returns:
  * 			- void
  *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/
-void ApplyGainOnChFrame(const float lSuppressionGain, tFRAME* vlFrameSamples );
+void ApplyGainOnChFrame(const float f_lGain, tFRAME* f_ptFrame );
 
-#endif
+#endif/*__SUPPRESSION_CURVES_H__*/
