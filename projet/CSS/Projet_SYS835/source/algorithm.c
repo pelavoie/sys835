@@ -79,7 +79,7 @@ void NoiseSuppressionAlgorithm(const tRAW_FRAME* f_ptRawInputFrame, tRAW_FRAME* 
 		{
 			lChParameter = 0.0;
 		}
-		//TODO: Rounding by typecast unsigned int... OK?
+
 		ulChSuppressionId = (unsigned int)((float)NUMBER_OF_SUPPRESSION_VALUES * lChParameter - 1);
 		lChSuppressionGain = vlSuppresionTable[ulChSuppressionId];
 
