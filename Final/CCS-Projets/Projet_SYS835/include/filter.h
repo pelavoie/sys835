@@ -8,7 +8,39 @@
 #ifndef FILTER_H_
 #define FILTER_H_
 
+/*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/
+/*  function : filterN2
+ *
+ * 		arguments:
+ * 			- out: 		A pointer to an array of float for output data.
+ * 			- in: 		A pointer to an array of float with input data.
+ * 			- coeffs: 	A pointer to an array of float containing 4 coefficients.
+ * 			- gain: 	The initial gain to apply to input.
+ * 			- nb: 		The number of inputs to process.
+ *
+ * 		Description:
+ * 			A bandpass Butterworth order 2 filter.
+ *
+ * 		returns:
+ * 			- void.
+ *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/
 void filterN2(float* out, float* in, float* coeffs, float gain, unsigned nb);
+/*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/
+/*  function : FilterASM
+ *
+ * 		arguments:
+ * 			- out: 		A pointer to an array of float for output data.
+ * 			- in: 		A pointer to an array of float with input data.
+ * 			- coeffs: 	A pointer to an array of float containing 4 coefficients.
+ * 			- gain: 	The initial gain to apply to input.
+ * 			- nb: 		The number of inputs to process.
+ *
+ * 		Description:
+ * 			A bandpass Butterworth order 2 filter.
+ *
+ * 		returns:
+ * 			- void.
+ *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/
 void FilterASM(float* out, float* in, float* coeffs, float gain, unsigned nb);
 
 float b[17][4] = {
