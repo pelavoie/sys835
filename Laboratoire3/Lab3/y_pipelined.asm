@@ -4,7 +4,7 @@
 ; h* = b4, vh=b2
 ; n = a6
 ; y:return = a4
-_y_pipelined:
+_y_pipelined: .asmfunc
 	mv 	 A4,A1
 	mv 	 B4,B1
 	mv   A6, B0
@@ -59,6 +59,6 @@ loop:   ldh .D1  *A1++,A2
 	nop 5
 	b	B3
 	nop 5
-
+	.endasmfunc
 
 

@@ -5,7 +5,7 @@
 ; n = a6
 ; y = a7
 ; return = a4
-_y_nopreplace:
+_y_nopreplace:  .asmfunc
 	zero A7
 	mv   A6, B0
 loop:
@@ -20,4 +20,4 @@ loop:
 	b     B3
 	mv    A7, A4
 	nop   4
-
+	.endasmfunc

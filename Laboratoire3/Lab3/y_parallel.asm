@@ -5,7 +5,7 @@
 ; n = a6
 ; y = a7
 ; return = a4
-_y_parallel:
+_y_parallel: .asmfunc
 	zero A7
 	mv   A6, B0
 loop:
@@ -21,4 +21,4 @@ loop:
 	mv    A7, A4
 	b     B3
 	nop   5
-
+ 	.endasmfunc

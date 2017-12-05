@@ -5,7 +5,7 @@
 ; n = a6
 ; y = a7
 ; return = a4
-_y_unroll:
+_y_unroll: .asmfunc
 	zero A0
 	zero B1
 	;shr  A6, 1, B0
@@ -33,4 +33,4 @@ loop:
 	b     B3
 	mv    A0, A4
 	nop   4
-
+ 	.endasmfunc
