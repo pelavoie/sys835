@@ -38,6 +38,7 @@
 
 # Debug files
 Debug/
+Release/
 *.dSYM/
 *.su
 *.idb
@@ -55,4 +56,6 @@ dkms.conf
 # Graphs
 #*.png
 #.settings/
-
+.vs/
+.metadata/
+*.VC.db
