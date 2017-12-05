@@ -38,8 +38,26 @@ loop:   ldh .D1  *A1++,A2
 || [B0] B   .S2  loop
 ||      mpy .M1x A2,B2,A3
 ||      add .L1  A4,A3,A4
-
 	nop 3
+e1:
+        mpy .M1x A2,B2,A3
+||      add .L1  A4,A3,A4
+e2:
+        mpy .M1x A2,B2,A3
+||      add .L1  A4,A3,A4
+e3:
+        mpy .M1x A2,B2,A3
+||      add .L1  A4,A3,A4
+e4:
+        mpy .M1x A2,B2,A3
+||      add .L1  A4,A3,A4
+e5:
+        mpy .M1x A2,B2,A3
+||      add .L1  A4,A3,A4
+e6:
+        add .L1  A4,A3,A4
+e7:
+        add .L1  A4,A3,A4
 	b	B3
 	nop 5
 
