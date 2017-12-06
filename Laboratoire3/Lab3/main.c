@@ -18,7 +18,7 @@ int main(void) {
 	{
 		x[i] = (2*i-70);
 		h[i] = (28-3*i);
-	//	y += x[i]*h[i];
+		y += x[i]*h[i];
 	}
 	y = y_nooptimization(x, h, 40);
 	y = y_parallel(x, h, 40);
